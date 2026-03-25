@@ -1,432 +1,447 @@
-import React, { useState } from 'react';
-import { 
-  Globe, 
-  CheckCircle2, 
-  Calculator, 
-  TrendingUp, 
-  FileText, 
-  Mail, 
-  Phone, 
-  MapPin,
-  Menu,
-  X
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCRELATE - ยกระดับการจัดการบัญชีสำหรับธุรกิจยุคใหม่</title>
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons (CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-// --- Translations ---
-const translations = {
-  th: {
-    nav: {
-      services: 'บริการ',
-      pricing: 'ค่าบริการ',
-      contact: 'ติดต่อเรา'
-    },
-    hero: {
-      title: 'ยกระดับการจัดการบัญชี สำหรับธุรกิจยุคใหม่',
-      subtitle: 'บริการรับทำบัญชี วางแผนภาษี และที่ปรึกษาการเงินแบบครบวงจร แม่นยำ รวดเร็ว และเชื่อถือได้ ด้วยทีมงานมืออาชีพของ ACCRELATE',
-      cta_primary: 'ปรึกษาเราฟรี',
-      cta_secondary: 'ดูบริการของเรา'
-    },
-    services: {
-      title: 'บริการของเรา',
-      subtitle: 'โซลูชันทางบัญชีที่ออกแบบมาเพื่อตอบโจทย์ทุกขนาดธุรกิจ',
-      items: [
-        { title: 'รับทำบัญชีรายเดือน', desc: 'บันทึกบัญชีครบถ้วน ถูกต้องตามมาตรฐานการบัญชี พร้อมรายงานสถานะทางการเงินทุกเดือน' },
-        { title: 'วางแผนและจัดการภาษี', desc: 'ยื่นภาษีตรงเวลา วางแผนภาษีอย่างชาญฉลาด เพื่อสิทธิประโยชน์สูงสุดของธุรกิจคุณ' },
-        { title: 'บริการเงินเดือน (Payroll)', desc: 'จัดการเงินเดือนพนักงาน ประกันสังคม และภาษีหัก ณ ที่จ่ายอย่างเป็นระบบ' }
-      ]
-    },
-    pricing: {
-      title: 'ค่าบริการ',
-      subtitle: 'เลือกแพ็กเกจที่เหมาะสมกับขนาดธุรกิจของคุณ',
-      packages: [
-        {
-          name: 'เริ่มต้น (Starter)',
-          price: '฿3,500',
-          period: '/เดือน',
-          features: ['บันทึกบัญชีไม่เกิน 50 รายการ', 'ยื่นภาษี ภ.ง.ด.1, 3, 53', 'ยื่นภาษีมูลค่าเพิ่ม (ภ.พ.30)', 'ให้คำปรึกษาเบื้องต้น']
-        },
-        {
-          name: 'ธุรกิจ (Business)',
-          price: '฿7,500',
-          period: '/เดือน',
-          features: ['บันทึกบัญชีไม่เกิน 200 รายการ', 'จัดการภาษีครบวงจร', 'ปิดงบการเงินรายเดือน', 'บริการ Payroll ไม่เกิน 10 คน', 'ผู้ช่วยส่วนตัวทางบัญชี'],
-          popular: true
-        },
-        {
-          name: 'องค์กร (Enterprise)',
-          price: 'Custom',
-          period: '',
-          features: ['รายการบัญชีไม่จำกัด', 'วางแผนภาษีเชิงลึก', 'วิเคราะห์งบการเงินผู้บริหาร', 'ดูแล Payroll ครบวงจร', 'ที่ปรึกษาทางการเงินส่วนตัว']
-        }
-      ]
-    },
-    contact: {
-      title: 'ติดต่อเรา',
-      subtitle: 'พร้อมให้คำปรึกษาและดูแลบัญชีให้ธุรกิจคุณเติบโตอย่างมั่นคง',
-      form: {
-        name: 'ชื่อ-นามสกุล',
-        email: 'อีเมล',
-        message: 'ข้อความของคุณ',
-        submit: 'ส่งข้อความ'
-      },
-      line_text: 'เพิ่มเพื่อนทาง LINE'
-    },
-    footer: {
-      rights: 'สงวนลิขสิทธิ์ © 2026 ACCRELATE'
-    }
-  },
-  en: {
-    nav: {
-      services: 'Services',
-      pricing: 'Pricing',
-      contact: 'Contact Us'
-    },
-    hero: {
-      title: 'Elevate Your Accounting for the Modern Business',
-      subtitle: 'Comprehensive bookkeeping, tax planning, and financial consulting. Accurate, fast, and reliable with the ACCRELATE professional team.',
-      cta_primary: 'Get a Free Consultation',
-      cta_secondary: 'Explore Services'
-    },
-    services: {
-      title: 'Our Services',
-      subtitle: 'Accounting solutions tailored for businesses of all sizes.',
-      items: [
-        { title: 'Monthly Bookkeeping', desc: 'Complete and accurate accounting records meeting standards, with monthly financial reports.' },
-        { title: 'Tax Planning & Management', desc: 'Timely tax filing and smart tax planning to maximize your business benefits.' },
-        { title: 'Payroll Services', desc: 'Systematic management of employee salaries, social security, and withholding taxes.' }
-      ]
-    },
-    pricing: {
-      title: 'Pricing',
-      subtitle: 'Choose the right package for your business size.',
-      packages: [
-        {
-          name: 'Starter',
-          price: '฿3,500',
-          period: '/month',
-          features: ['Up to 50 transactions', 'P.N.D. 1, 3, 53 filing', 'VAT filing (P.P.30)', 'Basic consultation']
-        },
-        {
-          name: 'Business',
-          price: '฿7,500',
-          period: '/month',
-          features: ['Up to 200 transactions', 'Comprehensive tax management', 'Monthly financial closing', 'Payroll up to 10 employees', 'Dedicated account manager'],
-          popular: true
-        },
-        {
-          name: 'Enterprise',
-          price: 'Custom',
-          period: '',
-          features: ['Unlimited transactions', 'Advanced tax planning', 'Executive financial analysis', 'Full payroll management', 'Personal financial advisor']
-        }
-      ]
-    },
-    contact: {
-      title: 'Contact Us',
-      subtitle: 'Ready to consult and manage your accounting for stable business growth.',
-      form: {
-        name: 'Full Name',
-        email: 'Email',
-        message: 'Your Message',
-        submit: 'Send Message'
-      },
-      line_text: 'Add us on LINE'
-    },
-    footer: {
-      rights: '© 2026 ACCRELATE. All rights reserved.'
-    }
-  }
-};
+    <style>
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 selection:bg-blue-200">
 
-// --- LINE Icon Component ---
-const LineIcon = ({ className }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
-    <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 3.945 8.918 9.536 9.596.376.046.883.141 1.01.442.115.27.075.69.036 1.077-.04.42-.25 1.517-.306 1.832-.073.415-.333 1.63 1.428.889 1.76-.74 9.477-5.584 11.235-9.288C23.633 13.565 24 11.996 24 10.304z"/>
-  </svg>
-);
+    <!-- --- Navbar --- -->
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <img src="./IMAGE.png" alt="ACCRELATE Logo" class="h-12 w-auto object-contain" />
+                </div>
 
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#services" class="text-slate-600 hover:text-blue-600 font-medium transition-colors" data-i18n="nav.services">บริการ</a>
+                    <a href="#pricing" class="text-slate-600 hover:text-blue-600 font-medium transition-colors" data-i18n="nav.pricing">ค่าบริการ</a>
+                    <a href="#contact" class="text-slate-600 hover:text-blue-600 font-medium transition-colors" data-i18n="nav.contact">ติดต่อเรา</a>
+                    
+                    <!-- Language Toggle -->
+                    <button onclick="toggleLang()" class="flex items-center space-x-1 text-slate-600 hover:text-blue-600 font-medium bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition-colors">
+                        <i data-lucide="globe" class="w-4 h-4"></i>
+                        <span id="lang-text-desktop">TH</span>
+                    </button>
+                </div>
 
-export default function App() {
-  const [lang, setLang] = useState('th');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  const t = translations[lang];
-
-  const toggleLang = () => {
-    setLang(lang === 'th' ? 'en' : 'th');
-  };
-
-  const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-    setIsMenuOpen(false);
-  };
-
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 selection:bg-blue-200">
-      
-      {/* --- Navbar --- */}
-      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            {/* Logo */}
-            <div className="flex items-center cursor-pointer" onClick={() => window.scrollTo(0,0)}>
-              <img src="./IMAGE.png" alt="ACCRELATE Logo" className="h-12 w-auto object-contain" />
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center space-x-4">
+                    <button onclick="toggleLang()" class="flex items-center space-x-1 text-slate-600 font-medium bg-slate-100 px-2 py-1 rounded-full">
+                        <i data-lucide="globe" class="w-4 h-4"></i>
+                        <span id="lang-text-mobile" class="text-sm">TH</span>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="text-slate-600">
+                        <i data-lucide="menu" id="menu-icon-open" class="w-6 h-6"></i>
+                        <i data-lucide="x" id="menu-icon-close" class="w-6 h-6 hidden"></i>
+                    </button>
+                </div>
             </div>
-
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-8">
-              <button onClick={() => scrollTo('services')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">{t.nav.services}</button>
-              <button onClick={() => scrollTo('pricing')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">{t.nav.pricing}</button>
-              <button onClick={() => scrollTo('contact')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">{t.nav.contact}</button>
-              
-              {/* Language Toggle */}
-              <button 
-                onClick={toggleLang}
-                className="flex items-center space-x-1 text-slate-600 hover:text-blue-600 font-medium bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition-colors"
-              >
-                <Globe className="w-4 h-4" />
-                <span>{lang.toUpperCase()}</span>
-              </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center space-x-4">
-              <button 
-                onClick={toggleLang}
-                className="flex items-center space-x-1 text-slate-600 font-medium bg-slate-100 px-2 py-1 rounded-full"
-              >
-                <Globe className="w-4 h-4" />
-                <span className="text-sm">{lang.toUpperCase()}</span>
-              </button>
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-600">
-                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-          </div>
         </div>
 
-        {/* Mobile Menu Panel */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-slate-100 shadow-lg absolute w-full">
-            <div className="px-4 pt-2 pb-4 space-y-1">
-              <button onClick={() => scrollTo('services')} className="block w-full text-left px-3 py-3 text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600">{t.nav.services}</button>
-              <button onClick={() => scrollTo('pricing')} className="block w-full text-left px-3 py-3 text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600">{t.nav.pricing}</button>
-              <button onClick={() => scrollTo('contact')} className="block w-full text-left px-3 py-3 text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600">{t.nav.contact}</button>
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-lg absolute w-full">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="#services" onclick="toggleMobileMenu()" class="block w-full text-left px-3 py-3 text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600" data-i18n="nav.services">บริการ</a>
+                <a href="#pricing" onclick="toggleMobileMenu()" class="block w-full text-left px-3 py-3 text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600" data-i18n="nav.pricing">ค่าบริการ</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="block w-full text-left px-3 py-3 text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600" data-i18n="nav.contact">ติดต่อเรา</a>
             </div>
-          </div>
-        )}
-      </nav>
-
-      {/* --- Hero Section --- */}
-      <section className="pt-32 pb-20 lg:pt-40 lg:pb-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-slate-100 overflow-hidden relative">
-        {/* Background Decoration */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-blue-100/50 blur-3xl opacity-50"></div>
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-sky-100/50 blur-3xl opacity-50"></div>
-
-        <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row items-center gap-12">
-          <div className="text-center lg:text-left lg:w-1/2">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-tight mb-6">
-              {lang === 'th' ? (
-                <>ยกระดับการจัดการบัญชี <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-400">สำหรับธุรกิจยุคใหม่</span></>
-              ) : (
-                <>Elevate Your Accounting <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-400">for Modern Business</span></>
-              )}
-            </h1>
-            <p className="mt-4 text-lg sm:text-xl text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0">
-              {t.hero.subtitle}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button onClick={() => scrollTo('contact')} className="px-8 py-3.5 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-lg shadow-blue-200 transition-all hover:-translate-y-0.5">
-                {t.hero.cta_primary}
-              </button>
-              <button onClick={() => scrollTo('services')} className="px-8 py-3.5 text-base font-medium text-blue-700 bg-white border border-blue-100 hover:bg-blue-50 rounded-full shadow-sm transition-all">
-                {t.hero.cta_secondary}
-              </button>
-            </div>
-          </div>
-          
-          <div className="lg:w-1/2 flex justify-center">
-             <div className="relative w-full max-w-md">
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-200 to-sky-100 rounded-3xl transform rotate-3 scale-105 opacity-50"></div>
-                <img src="./IMAGE.png" alt="ACCRELATE Symbol" className="relative z-10 w-full h-auto drop-shadow-2xl rounded-3xl bg-white p-12 border border-slate-100" />
-             </div>
-          </div>
         </div>
-      </section>
+    </nav>
 
-      {/* --- Services Section --- */}
-      <section id="services" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">{t.services.title}</h2>
-            <p className="mt-4 text-lg text-slate-600">{t.services.subtitle}</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:border-blue-100 transition-all group">
-              <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Calculator className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">{t.services.items[0].title}</h3>
-              <p className="text-slate-600 leading-relaxed">{t.services.items[0].desc}</p>
+    <!-- --- Hero Section --- -->
+    <section class="pt-32 pb-20 lg:pt-40 lg:pb-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-slate-100 overflow-hidden relative">
+        <!-- Background Decoration -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-blue-100/50 blur-3xl opacity-50"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-sky-100/50 blur-3xl opacity-50"></div>
+
+        <div class="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row items-center gap-12">
+            <div class="text-center lg:text-left lg:w-1/2">
+                <h1 id="hero-title" class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-tight mb-6">
+                    ยกระดับการจัดการบัญชี <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-400">สำหรับธุรกิจยุคใหม่</span>
+                </h1>
+                <p id="hero-subtitle" class="mt-4 text-lg sm:text-xl text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0">
+                    บริการรับทำบัญชี วางแผนภาษี และที่ปรึกษาการเงินแบบครบวงจร แม่นยำ รวดเร็ว และเชื่อถือได้ ด้วยทีมงานมืออาชีพของ ACCRELATE
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#contact" class="px-8 py-3.5 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-lg shadow-blue-200 transition-all hover:-translate-y-0.5 text-center" data-i18n="hero.cta_primary">
+                        ปรึกษาเราฟรี
+                    </a>
+                    <a href="#services" class="px-8 py-3.5 text-base font-medium text-blue-700 bg-white border border-blue-100 hover:bg-blue-50 rounded-full shadow-sm transition-all text-center" data-i18n="hero.cta_secondary">
+                        ดูบริการของเรา
+                    </a>
+                </div>
             </div>
             
-            <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:border-blue-100 transition-all group">
-              <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <TrendingUp className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">{t.services.items[1].title}</h3>
-              <p className="text-slate-600 leading-relaxed">{t.services.items[1].desc}</p>
+            <div class="lg:w-1/2 flex justify-center">
+                <div class="relative w-full max-w-md">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-blue-200 to-sky-100 rounded-3xl transform rotate-3 scale-105 opacity-50"></div>
+                    <img src="./IMAGE.png" alt="ACCRELATE Symbol" class="relative z-10 w-full h-auto drop-shadow-2xl rounded-3xl bg-white p-12 border border-slate-100" onerror="this.src='https://placehold.co/400x400/e2e8f0/475569?text=ACCRELATE'"/>
+                </div>
             </div>
-
-            <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:border-blue-100 transition-all group">
-              <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <FileText className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">{t.services.items[2].title}</h3>
-              <p className="text-slate-600 leading-relaxed">{t.services.items[2].desc}</p>
-            </div>
-          </div>
         </div>
-      </section>
+    </section>
 
-      {/* --- Pricing Section --- */}
-      <section id="pricing" className="py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">{t.pricing.title}</h2>
-            <p className="mt-4 text-lg text-slate-600">{t.pricing.subtitle}</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
-            {t.pricing.packages.map((pkg, idx) => (
-              <div key={idx} className={`relative p-8 rounded-3xl bg-white border ${pkg.popular ? 'border-blue-500 shadow-2xl scale-105 z-10 py-10' : 'border-slate-200 shadow-lg'}`}>
-                {pkg.popular && (
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <span className="bg-gradient-to-r from-blue-600 to-sky-500 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">{pkg.name}</h3>
-                <div className="flex items-baseline text-slate-900 mb-6">
-                  <span className="text-4xl font-extrabold tracking-tight">{pkg.price}</span>
-                  <span className="ml-1 text-slate-500 font-medium">{pkg.period}</span>
+    <!-- --- Services Section --- -->
+    <section id="services" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl" data-i18n="services.title">บริการของเรา</h2>
+                <p class="mt-4 text-lg text-slate-600" data-i18n="services.subtitle">โซลูชันทางบัญชีที่ออกแบบมาเพื่อตอบโจทย์ทุกขนาดธุรกิจ</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:border-blue-100 transition-all group">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="calculator" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3" data-i18n="services.item1.title">รับทำบัญชีรายเดือน</h3>
+                    <p class="text-slate-600 leading-relaxed" data-i18n="services.item1.desc">บันทึกบัญชีครบถ้วน ถูกต้องตามมาตรฐานการบัญชี พร้อมรายงานสถานะทางการเงินทุกเดือน</p>
                 </div>
                 
-                <ul className="space-y-4 mb-8">
-                  {pkg.features.map((feature, fIdx) => (
-                    <li key={fIdx} className="flex items-start">
-                      <CheckCircle2 className="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5" />
-                      <span className="text-slate-600">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                
-                <button className={`w-full py-3 px-4 rounded-xl font-semibold transition-colors ${pkg.popular ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md' : 'bg-slate-100 hover:bg-slate-200 text-slate-800'}`}>
-                  {lang === 'th' ? 'เลือกแพ็กเกจนี้' : 'Choose Package'}
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* --- Contact Section --- */}
-      <section id="contact" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-br from-blue-600 to-sky-500 rounded-3xl shadow-2xl overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              
-              {/* Contact Info */}
-              <div className="p-10 lg:p-16 text-white">
-                <h2 className="text-3xl font-bold mb-4">{t.contact.title}</h2>
-                <p className="text-blue-100 text-lg mb-10">{t.contact.subtitle}</p>
-                
-                <div className="space-y-6 mb-12">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mr-4 shrink-0">
-                      <Phone className="w-5 h-5" />
+                <!-- Service 2 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:border-blue-100 transition-all group">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="trending-up" class="w-7 h-7"></i>
                     </div>
-                    <div>
-                      <p className="text-blue-100 text-sm">{lang === 'th' ? 'โทรศัพท์' : 'Phone'}</p>
-                      <p className="text-xl font-semibold">02-XXX-XXXX</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mr-4 shrink-0">
-                      <Mail className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <p className="text-blue-100 text-sm">{lang === 'th' ? 'อีเมล' : 'Email'}</p>
-                      <p className="text-lg font-medium">contact@accrelate.com</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mr-4 shrink-0">
-                      <MapPin className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <p className="text-blue-100 text-sm">{lang === 'th' ? 'ที่อยู่' : 'Address'}</p>
-                      <p className="text-base font-medium">123 Business District, Bangkok, Thailand 10110</p>
-                    </div>
-                  </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3" data-i18n="services.item2.title">วางแผนและจัดการภาษี</h3>
+                    <p class="text-slate-600 leading-relaxed" data-i18n="services.item2.desc">ยื่นภาษีตรงเวลา วางแผนภาษีอย่างชาญฉลาด เพื่อสิทธิประโยชน์สูงสุดของธุรกิจคุณ</p>
                 </div>
 
-                {/* LINE Button Highlight */}
-                <div className="mt-8">
-                   <p className="text-sm text-blue-100 mb-3">{t.contact.line_text}</p>
-                   <a 
-                     href="#" 
-                     className="inline-flex items-center bg-[#00B900] hover:bg-[#009900] text-white font-bold py-3 px-6 rounded-full shadow-lg transition-transform hover:scale-105"
-                   >
-                     <LineIcon className="w-6 h-6 mr-2" />
-                     @ACCRELATE
-                   </a>
+                <!-- Service 3 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:border-blue-100 transition-all group">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="file-text" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3" data-i18n="services.item3.title">บริการเงินเดือน (Payroll)</h3>
+                    <p class="text-slate-600 leading-relaxed" data-i18n="services.item3.desc">จัดการเงินเดือนพนักงาน ประกันสังคม และภาษีหัก ณ ที่จ่ายอย่างเป็นระบบ</p>
                 </div>
-              </div>
-              
-              {/* Contact Form */}
-              <div className="p-10 lg:p-16 bg-white">
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">{t.contact.form.name}</label>
-                    <input type="text" className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-slate-50 focus:bg-white" placeholder="John Doe" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">{t.contact.form.email}</label>
-                    <input type="email" className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-slate-50 focus:bg-white" placeholder="john@example.com" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">{t.contact.form.message}</label>
-                    <textarea rows="4" className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-slate-50 focus:bg-white" placeholder={lang === 'th' ? 'รายละเอียดที่ต้องการสอบถาม...' : 'How can we help you?'}></textarea>
-                  </div>
-                  <button type="submit" className="w-full py-4 px-6 rounded-xl font-bold text-white bg-slate-900 hover:bg-blue-600 shadow-md transition-colors">
-                    {t.contact.form.submit}
-                  </button>
-                </form>
-              </div>
-
             </div>
-          </div>
         </div>
-      </section>
+    </section>
 
-      {/* --- Footer --- */}
-      <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center space-x-3 mb-4 md:mb-0">
-            {/* Logo in footer (Optional, can just use text if image is dark) */}
-             <div className="bg-white p-2 rounded-lg inline-block">
-                <img src="./IMAGE.png" alt="ACCRELATE Logo" className="h-6 w-auto object-contain" />
-             </div>
-             <span className="text-white font-bold tracking-wider">ACCRELATE</span>
-          </div>
-          <p className="text-sm">{t.footer.rights}</p>
+    <!-- --- Pricing Section --- -->
+    <section id="pricing" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl" data-i18n="pricing.title">ค่าบริการ</h2>
+                <p class="mt-4 text-lg text-slate-600" data-i18n="pricing.subtitle">เลือกแพ็กเกจที่เหมาะสมกับขนาดธุรกิจของคุณ</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
+                <!-- Package 1 -->
+                <div class="relative p-8 rounded-3xl bg-white border border-slate-200 shadow-lg">
+                    <h3 class="text-xl font-semibold text-slate-900 mb-2" data-i18n="pricing.pkg1.name">เริ่มต้น (Starter)</h3>
+                    <div class="flex items-baseline text-slate-900 mb-6">
+                        <span class="text-4xl font-extrabold tracking-tight">฿3,500</span>
+                        <span class="ml-1 text-slate-500 font-medium" data-i18n="pricing.month">/เดือน</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg1.f1">บันทึกบัญชีไม่เกิน 50 รายการ</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg1.f2">ยื่นภาษี ภ.ง.ด.1, 3, 53</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg1.f3">ยื่นภาษีมูลค่าเพิ่ม (ภ.พ.30)</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg1.f4">ให้คำปรึกษาเบื้องต้น</span></li>
+                    </ul>
+                    <button class="w-full py-3 px-4 rounded-xl font-semibold transition-colors bg-slate-100 hover:bg-slate-200 text-slate-800" data-i18n="pricing.btn">เลือกแพ็กเกจนี้</button>
+                </div>
+
+                <!-- Package 2 -->
+                <div class="relative p-8 rounded-3xl bg-white border border-blue-500 shadow-2xl scale-105 z-10 py-10">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <span class="bg-gradient-to-r from-blue-600 to-sky-500 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide">Most Popular</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-2" data-i18n="pricing.pkg2.name">ธุรกิจ (Business)</h3>
+                    <div class="flex items-baseline text-slate-900 mb-6">
+                        <span class="text-4xl font-extrabold tracking-tight">฿7,500</span>
+                        <span class="ml-1 text-slate-500 font-medium" data-i18n="pricing.month">/เดือน</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg2.f1">บันทึกบัญชีไม่เกิน 200 รายการ</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg2.f2">จัดการภาษีครบวงจร</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg2.f3">ปิดงบการเงินรายเดือน</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg2.f4">บริการ Payroll ไม่เกิน 10 คน</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg2.f5">ผู้ช่วยส่วนตัวทางบัญชี</span></li>
+                    </ul>
+                    <button class="w-full py-3 px-4 rounded-xl font-semibold transition-colors bg-blue-600 hover:bg-blue-700 text-white shadow-md" data-i18n="pricing.btn">เลือกแพ็กเกจนี้</button>
+                </div>
+
+                <!-- Package 3 -->
+                <div class="relative p-8 rounded-3xl bg-white border border-slate-200 shadow-lg">
+                    <h3 class="text-xl font-semibold text-slate-900 mb-2" data-i18n="pricing.pkg3.name">องค์กร (Enterprise)</h3>
+                    <div class="flex items-baseline text-slate-900 mb-6">
+                        <span class="text-4xl font-extrabold tracking-tight">Custom</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg3.f1">รายการบัญชีไม่จำกัด</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg3.f2">วางแผนภาษีเชิงลึก</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg3.f3">วิเคราะห์งบการเงินผู้บริหาร</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg3.f4">ดูแล Payroll ครบวงจร</span></li>
+                        <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-3 shrink-0 mt-0.5"></i><span class="text-slate-600" data-i18n="pricing.pkg3.f5">ที่ปรึกษาทางการเงินส่วนตัว</span></li>
+                    </ul>
+                    <button class="w-full py-3 px-4 rounded-xl font-semibold transition-colors bg-slate-100 hover:bg-slate-200 text-slate-800" data-i18n="pricing.btn">เลือกแพ็กเกจนี้</button>
+                </div>
+            </div>
         </div>
-      </footer>
+    </section>
 
-    </div>
-  );
-}
+    <!-- --- Contact Section --- -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-br from-blue-600 to-sky-500 rounded-3xl shadow-2xl overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2">
+                    
+                    <!-- Contact Info -->
+                    <div class="p-10 lg:p-16 text-white">
+                        <h2 class="text-3xl font-bold mb-4" data-i18n="contact.title">ติดต่อเรา</h2>
+                        <p class="text-blue-100 text-lg mb-10" data-i18n="contact.subtitle">พร้อมให้คำปรึกษาและดูแลบัญชีให้ธุรกิจคุณเติบโตอย่างมั่นคง</p>
+                        
+                        <div class="space-y-6 mb-12">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mr-4 shrink-0">
+                                    <i data-lucide="phone" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-blue-100 text-sm" data-i18n="contact.phone">โทรศัพท์</p>
+                                    <p class="text-xl font-semibold">02-XXX-XXXX</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mr-4 shrink-0">
+                                    <i data-lucide="mail" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-blue-100 text-sm" data-i18n="contact.email">อีเมล</p>
+                                    <p class="text-lg font-medium">contact@accrelate.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mr-4 shrink-0">
+                                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-blue-100 text-sm" data-i18n="contact.address">ที่อยู่</p>
+                                    <p class="text-base font-medium">123 Business District, Bangkok, Thailand 10110</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LINE Button Highlight -->
+                        <div class="mt-8">
+                            <p class="text-sm text-blue-100 mb-3" data-i18n="contact.line_text">เพิ่มเพื่อนทาง LINE</p>
+                            <a href="#" class="inline-flex items-center bg-[#00B900] hover:bg-[#009900] text-white font-bold py-3 px-6 rounded-full shadow-lg transition-transform hover:scale-105">
+                                <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 3.945 8.918 9.536 9.596.376.046.883.141 1.01.442.115.27.075.69.036 1.077-.04.42-.25 1.517-.306 1.832-.073.415-.333 1.63 1.428.889 1.76-.74 9.477-5.584 11.235-9.288C23.633 13.565 24 11.996 24 10.304z"/>
+                                </svg>
+                                @ACCRELATE
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Form -->
+                    <div class="p-10 lg:p-16 bg-white">
+                        <form class="space-y-6" onsubmit="event.preventDefault(); alert('ส่งข้อความสำเร็จ!');">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2" data-i18n="contact.form.name">ชื่อ-นามสกุล</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-slate-50 focus:bg-white" placeholder="John Doe" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2" data-i18n="contact.form.email">อีเมล</label>
+                                <input type="email" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-slate-50 focus:bg-white" placeholder="john@example.com" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2" data-i18n="contact.form.message">ข้อความของคุณ</label>
+                                <textarea rows="4" id="form-message" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-slate-50 focus:bg-white" placeholder="รายละเอียดที่ต้องการสอบถาม..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-4 px-6 rounded-xl font-bold text-white bg-slate-900 hover:bg-blue-600 shadow-md transition-colors" data-i18n="contact.form.submit">
+                                ส่งข้อความ
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- Footer --- -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                <div class="bg-white p-2 rounded-lg inline-block">
+                    <img src="./IMAGE.png" alt="ACCRELATE Logo" class="h-6 w-auto object-contain" onerror="this.style.display='none'" />
+                </div>
+                <span class="text-white font-bold tracking-wider">ACCRELATE</span>
+            </div>
+            <p class="text-sm" data-i18n="footer.rights">สงวนลิขสิทธิ์ © 2026 ACCRELATE</p>
+        </div>
+    </footer>
+
+    <!-- --- JavaScript --- -->
+    <script>
+        // Render Icons
+        lucide.createIcons();
+
+        // Mobile Menu Logic
+        let isMenuOpen = false;
+        function toggleMobileMenu() {
+            isMenuOpen = !isMenuOpen;
+            const menu = document.getElementById('mobile-menu');
+            const iconOpen = document.getElementById('menu-icon-open');
+            const iconClose = document.getElementById('menu-icon-close');
+            
+            if(isMenuOpen) {
+                menu.classList.remove('hidden');
+                iconOpen.classList.add('hidden');
+                iconClose.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+                iconOpen.classList.remove('hidden');
+                iconClose.classList.add('hidden');
+            }
+        }
+
+        // Translation Data
+        const translations = {
+            th: {
+                "nav.services": "บริการ",
+                "nav.pricing": "ค่าบริการ",
+                "nav.contact": "ติดต่อเรา",
+                "hero.cta_primary": "ปรึกษาเราฟรี",
+                "hero.cta_secondary": "ดูบริการของเรา",
+                "services.title": "บริการของเรา",
+                "services.subtitle": "โซลูชันทางบัญชีที่ออกแบบมาเพื่อตอบโจทย์ทุกขนาดธุรกิจ",
+                "services.item1.title": "รับทำบัญชีรายเดือน",
+                "services.item1.desc": "บันทึกบัญชีครบถ้วน ถูกต้องตามมาตรฐานการบัญชี พร้อมรายงานสถานะทางการเงินทุกเดือน",
+                "services.item2.title": "วางแผนและจัดการภาษี",
+                "services.item2.desc": "ยื่นภาษีตรงเวลา วางแผนภาษีอย่างชาญฉลาด เพื่อสิทธิประโยชน์สูงสุดของธุรกิจคุณ",
+                "services.item3.title": "บริการเงินเดือน (Payroll)",
+                "services.item3.desc": "จัดการเงินเดือนพนักงาน ประกันสังคม และภาษีหัก ณ ที่จ่ายอย่างเป็นระบบ",
+                "pricing.title": "ค่าบริการ",
+                "pricing.subtitle": "เลือกแพ็กเกจที่เหมาะสมกับขนาดธุรกิจของคุณ",
+                "pricing.month": "/เดือน",
+                "pricing.pkg1.name": "เริ่มต้น (Starter)",
+                "pricing.pkg1.f1": "บันทึกบัญชีไม่เกิน 50 รายการ",
+                "pricing.pkg1.f2": "ยื่นภาษี ภ.ง.ด.1, 3, 53",
+                "pricing.pkg1.f3": "ยื่นภาษีมูลค่าเพิ่ม (ภ.พ.30)",
+                "pricing.pkg1.f4": "ให้คำปรึกษาเบื้องต้น",
+                "pricing.pkg2.name": "ธุรกิจ (Business)",
+                "pricing.pkg2.f1": "บันทึกบัญชีไม่เกิน 200 รายการ",
+                "pricing.pkg2.f2": "จัดการภาษีครบวงจร",
+                "pricing.pkg2.f3": "ปิดงบการเงินรายเดือน",
+                "pricing.pkg2.f4": "บริการ Payroll ไม่เกิน 10 คน",
+                "pricing.pkg2.f5": "ผู้ช่วยส่วนตัวทางบัญชี",
+                "pricing.pkg3.name": "องค์กร (Enterprise)",
+                "pricing.pkg3.f1": "รายการบัญชีไม่จำกัด",
+                "pricing.pkg3.f2": "วางแผนภาษีเชิงลึก",
+                "pricing.pkg3.f3": "วิเคราะห์งบการเงินผู้บริหาร",
+                "pricing.pkg3.f4": "ดูแล Payroll ครบวงจร",
+                "pricing.pkg3.f5": "ที่ปรึกษาทางการเงินส่วนตัว",
+                "pricing.btn": "เลือกแพ็กเกจนี้",
+                "contact.title": "ติดต่อเรา",
+                "contact.subtitle": "พร้อมให้คำปรึกษาและดูแลบัญชีให้ธุรกิจคุณเติบโตอย่างมั่นคง",
+                "contact.phone": "โทรศัพท์",
+                "contact.email": "อีเมล",
+                "contact.address": "ที่อยู่",
+                "contact.line_text": "เพิ่มเพื่อนทาง LINE",
+                "contact.form.name": "ชื่อ-นามสกุล",
+                "contact.form.email": "อีเมล",
+                "contact.form.message": "ข้อความของคุณ",
+                "contact.form.submit": "ส่งข้อความ",
+                "footer.rights": "สงวนลิขสิทธิ์ © 2026 ACCRELATE"
+            },
+            en: {
+                "nav.services": "Services",
+                "nav.pricing": "Pricing",
+                "nav.contact": "Contact Us",
+                "hero.cta_primary": "Get a Free Consultation",
+                "hero.cta_secondary": "Explore Services",
+                "services.title": "Our Services",
+                "services.subtitle": "Accounting solutions tailored for businesses of all sizes.",
+                "services.item1.title": "Monthly Bookkeeping",
+                "services.item1.desc": "Complete and accurate accounting records meeting standards, with monthly financial reports.",
+                "services.item2.title": "Tax Planning & Management",
+                "services.item2.desc": "Timely tax filing and smart tax planning to maximize your business benefits.",
+                "services.item3.title": "Payroll Services",
+                "services.item3.desc": "Systematic management of employee salaries, social security, and withholding taxes.",
+                "pricing.title": "Pricing",
+                "pricing.subtitle": "Choose the right package for your business size.",
+                "pricing.month": "/month",
+                "pricing.pkg1.name": "Starter",
+                "pricing.pkg1.f1": "Up to 50 transactions",
+                "pricing.pkg1.f2": "P.N.D. 1, 3, 53 filing",
+                "pricing.pkg1.f3": "VAT filing (P.P.30)",
+                "pricing.pkg1.f4": "Basic consultation",
+                "pricing.pkg2.name": "Business",
+                "pricing.pkg2.f1": "Up to 200 transactions",
+                "pricing.pkg2.f2": "Comprehensive tax management",
+                "pricing.pkg2.f3": "Monthly financial closing",
+                "pricing.pkg2.f4": "Payroll up to 10 employees",
+                "pricing.pkg2.f5": "Dedicated account manager",
+                "pricing.pkg3.name": "Enterprise",
+                "pricing.pkg3.f1": "Unlimited transactions",
+                "pricing.pkg3.f2": "Advanced tax planning",
+                "pricing.pkg3.f3": "Executive financial analysis",
+                "pricing.pkg3.f4": "Full payroll management",
+                "pricing.pkg3.f5": "Personal financial advisor",
+                "pricing.btn": "Choose Package",
+                "contact.title": "Contact Us",
+                "contact.subtitle": "Ready to consult and manage your accounting for stable business growth.",
+                "contact.phone": "Phone",
+                "contact.email": "Email",
+                "contact.address": "Address",
+                "contact.line_text": "Add us on LINE",
+                "contact.form.name": "Full Name",
+                "contact.form.email": "Email",
+                "contact.form.message": "Your Message",
+                "contact.form.submit": "Send Message",
+                "footer.rights": "© 2026 ACCRELATE. All rights reserved."
+            }
+        };
+
+        let currentLang = 'th';
+
+        function toggleLang() {
+            currentLang = currentLang === 'th' ? 'en' : 'th';
+            
+            // Update Toggle Button Text
+            document.getElementById('lang-text-desktop').innerText = currentLang.toUpperCase();
+            document.getElementById('lang-text-mobile').innerText = currentLang.toUpperCase();
+
+            // Update complex HTML elements
+            if(currentLang === 'th') {
+                document.getElementById('hero-title').innerHTML = `ยกระดับการจัดการบัญชี <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-400">สำหรับธุรกิจยุคใหม่</span>`;
+                document.getElementById('hero-subtitle').innerText = "บริการรับทำบัญชี วางแผนภาษี และที่ปรึกษาการเงินแบบครบวงจร แม่นยำ รวดเร็ว และเชื่อถือได้ ด้วยทีมงานมืออาชีพของ ACCRELATE";
+                document.getElementById('form-message').placeholder = "รายละเอียดที่ต้องการสอบถาม...";
+            } else {
+                document.getElementById('hero-title').innerHTML = `Elevate Your Accounting <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-400">for Modern Business</span>`;
+                document.getElementById('hero-subtitle').innerText = "Comprehensive bookkeeping, tax planning, and financial consulting. Accurate, fast, and reliable with the ACCRELATE professional team.";
+                document.getElementById('form-message').placeholder = "How can we help you?";
+            }
+
+            // Update standard text elements via data-i18n attribute
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerText = translations[currentLang][key];
+                }
+            });
+        }
+    </script>
+</body>
+</html>
